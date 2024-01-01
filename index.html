@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rancho&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Platno</title>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Platno</h1>
+      <div class="tool-container">
+        <div class="tool" id="pencil" onclick="handleTool('pencil')">✏️</div>
+        <div class="tool" id="segment" onclick="handleTool('segment')">/</div>
+        <div class="tool" id="rectangle" onclick="handleTool('rectangle')">
+          ⬜
+        </div>
+        <div class="tool" id="circle" onclick="handleTool('circle')">⚪</div>
+        <div class="tool text" id="clear">🗑️ Clear</div>
+        <div class="tool text" id="download">💾 Download</div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="options-container">
+        <div class="options">
+          <p>Selected color:</p>
+          <input type="color" onchange="handleColor(this)" />
+        </div>
+
+        <div>
+          <p>Selected line width:</p>
+          <input
+            type="range"
+            onchange="handleRange(this)"
+            min="1"
+            max="15"
+            value="2"
+          />
+        </div>
+      </div>
+      <canvas></canvas>
+    </div>
+  </body>
+  <script src="./tools.js"></script>
+  <script src="./environment.js"></script>
+  <script>
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const environment = new Environment(canvas);
+
+    canvas.width = screen.availWidth * 0.8;
+    canvas.height = screen.availHeight * 0.7;
+
+    document
+      .querySelector("#clear")
+      .addEventListener("click", () => environment.clearEnvironment());
+    document
+      .querySelector("#download")
+      .addEventListener("click", () => environment.download());
+
+    function handleRange(e) {
+      environment.changeWidth(e.value);
+    }
+
+    function handleColor(e) {
+      environment.changeColor(e.value);
+    }
+
+    function handleTool(tool) {
+      environment.changeTool(tool);
+    }
+
+    animate();
+
+    function animate() {
+      environment.draw();
+      requestAnimationFrame(animate);
+    }
+  </script>
+</html>
