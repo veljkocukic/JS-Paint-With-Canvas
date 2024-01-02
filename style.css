@@ -36,6 +36,11 @@ body {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   background-color: white;
   cursor: pointer;
+  transition: .1s ease-in;
+}
+
+.tool:hover{
+  transform: translateY(-10%);
 }
 
 .text {
@@ -86,4 +91,11 @@ input {
 
 h1 {
   font-size: 3rem;
+}
+
+input[type='checkbox']{
+  width: 2rem;
+}
+.toggled{
+  transform: translateY(-15%);
 }

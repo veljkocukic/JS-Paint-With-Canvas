@@ -18,12 +18,12 @@
     <div class="header">
       <h1>Platno</h1>
       <div class="tool-container">
-        <div class="tool" id="pencil" onclick="handleTool('pencil')">✏️</div>
-        <div class="tool" id="segment" onclick="handleTool('segment')">/</div>
-        <div class="tool" id="rectangle" onclick="handleTool('rectangle')">
+        <div class="tool toggled" id="pencil" onclick="handleTool(this)">✏️</div>
+        <div class="tool" id="segment" onclick="handleTool(this)">/</div>
+        <div class="tool" id="rectangle" onclick="handleTool(this)">
           ⬜
         </div>
-        <div class="tool" id="circle" onclick="handleTool('circle')">⚪</div>
+        <div class="tool" id="circle" onclick="handleTool(this)">⚪</div>
         <div class="tool text" id="clear">🗑️ Clear</div>
         <div class="tool text" id="download">💾 Download</div>
       </div>
@@ -45,6 +45,15 @@
             value="2"
           />
         </div>
+
+        <div>
+          <p>Fill Shapes:</p>
+          <input
+            type="checkbox"
+            onchange="handleFill()"
+            checked
+          />
+          </div>
       </div>
       <canvas></canvas>
     </div>
@@ -57,8 +66,8 @@
 
     const environment = new Environment(canvas);
 
-    canvas.width = screen.availWidth * 0.8;
-    canvas.height = screen.availHeight * 0.7;
+    canvas.width = window.innerWidth * 0.8;
+    canvas.height = window.innerHeight * 0.7;
 
     document
       .querySelector("#clear")
@@ -75,8 +84,23 @@
       environment.changeColor(e.value);
     }
 
-    function handleTool(tool) {
-      environment.changeTool(tool);
+    function handleTool(element) {
+      const {id} = element
+      const tools = document.querySelectorAll('.tool').forEach(n=>{
+        if(!n.className.includes('text')){
+          if(n.className == 'tool' && n.id==id){
+            n.classList.add('toggled')
+          }else{
+            n.classList.remove('toggled')
+          }
+        }
+      })
+      console.log(tools)
+      environment.changeTool(id);
+    }
+
+    function handleFill() {
+      environment.fillShapes();
     }
 
     animate();

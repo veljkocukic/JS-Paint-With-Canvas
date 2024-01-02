@@ -20,6 +20,7 @@ class Environment {
       currentlyAddingSegment: null,
       currentlyAddingRectangle: null,
       currentlyAddingCirlce: null,
+      shapesFilled: true
     };
   }
 
@@ -61,9 +62,14 @@ class Environment {
     this.state.selectedTool = tool;
   }
 
+  fillShapes(){
+    this.state.shapesFilled = !this.state.shapesFilled
+  }
+
   clearEnvironment() {
     this.segments = [];
     this.rectangles = [];
+    this.circles = [];
   }
 
   download() {
@@ -75,6 +81,7 @@ class Environment {
   }
 
   #addEventListeners() {
+
     this.canvas.addEventListener("mousedown", (e) => {
       this.state.drawingOn = true;
       this.state.lastMouse = new Point(e);
@@ -89,14 +96,14 @@ class Environment {
             this.state.currentlyAddingCirlce = new Circle(
               this.state.lastMouse,
               new Point(e),
-              style
+              {...style, shapesFilled:this.state.shapesFilled}
             );
             break;
           case "rectangle":
             this.state.currentlyAddingRectangle = new Rectangle(
               this.state.lastMouse,
               new Point(e),
-              style
+              {...style, shapesFilled:this.state.shapesFilled}
             );
             break;
           case "segment":
@@ -123,15 +130,18 @@ class Environment {
       this.state.lastMouse = null;
       this.state.firstSegmentPoint = null;
       if (this.state.selectedTool == "segment") {
-        this.segments.push(this.state.currentlyAddingSegment);
+        const seg = this.state.currentlyAddingSegment
+        seg && this.segments.push(seg);
         this.state.currentlyAddingSegment = null;
       }
       if (this.state.selectedTool == "rectangle") {
-        this.rectangles.push(this.state.currentlyAddingRectangle);
+        const rect = this.state.currentlyAddingRectangle
+        rect && this.rectangles.push(rect)
         this.state.currentlyAddingRectangle = null;
       }
       if (this.state.selectedTool == "circle") {
-        this.rectangles.push(this.state.currentlyAddingCirlce);
+        const circ = this.state.currentlyAddingCirlce
+        circ && this.circles.push(circ);
         this.state.currentlyAddingCirlce = null;
       }
     });

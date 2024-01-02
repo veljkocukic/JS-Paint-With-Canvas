@@ -19,6 +19,8 @@ class Segment {
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.strokeStyle = this.style.color;
     ctx.lineWidth = this.style.width;
+    ctx.lineCap='round'
+    ctx.lineJoin='round'
     ctx.stroke();
     ctx.restore();
   }
@@ -31,7 +33,6 @@ class Pencil {
   }
 
   draw(lastMouse) {
-    console.log(this.style);
     if (lastMouse) {
       const seg = new Segment(this.mouse, lastMouse, this.style);
       return seg;
@@ -61,6 +62,10 @@ class Circle {
     ctx.strokeStyle = this.style.color;
     ctx.lineWidth = this.style.width;
     ctx.stroke();
+    if(this.style.shapesFilled){
+      ctx.fillStyle = this.style.color
+      ctx.fill()
+    }
   }
 }
 
@@ -82,5 +87,9 @@ class Rectangle {
     ctx.strokeStyle = this.style.color;
     ctx.lineWidth = this.style.width;
     ctx.stroke();
+    if(this.style.shapesFilled){
+      ctx.fillStyle = this.style.color
+      ctx.fill()
+    }
   }
 }
